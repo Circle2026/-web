@@ -1,0 +1,835 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>BI 智慧商業分析專題</title>
+    <style>
+      :root {
+        --bg: #071a2d;
+        --bg-soft: #0d2440;
+        --panel: rgba(17, 34, 58, 0.82);
+        --panel-strong: #12294b;
+        --primary: #5eead4;
+        --primary-2: #60a5fa;
+        --accent: #fbbf24;
+        --text: #eaf2ff;
+        --muted: #a7bdd9;
+        --line: rgba(255, 255, 255, 0.09);
+        --success: #34d399;
+        --warning: #fbbf24;
+        --danger: #f87171;
+        --shadow: 0 20px 45px rgba(0, 0, 0, 0.25);
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        margin: 0;
+        font-family: "Segoe UI", "Microsoft JhengHei", sans-serif;
+        background:
+          radial-gradient(circle at top left, rgba(96, 165, 250, 0.25), transparent 25%),
+          radial-gradient(circle at top right, rgba(94, 234, 212, 0.18), transparent 30%),
+          linear-gradient(135deg, var(--bg) 0%, #081927 45%, #0a1d33 100%);
+        color: var(--text);
+        line-height: 1.7;
+      }
+
+      a {
+        color: inherit;
+        text-decoration: none;
+      }
+
+      .container {
+        width: min(1200px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      header {
+        position: sticky;
+        top: 0;
+        z-index: 20;
+        backdrop-filter: blur(12px);
+        background: rgba(7, 26, 45, 0.72);
+        border-bottom: 1px solid var(--line);
+      }
+
+      .nav {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        min-height: 72px;
+      }
+
+      .brand {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        font-weight: 700;
+        letter-spacing: 1px;
+      }
+
+      .brand-mark {
+        width: 38px;
+        height: 38px;
+        border-radius: 10px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        display: grid;
+        place-items: center;
+        color: var(--bg);
+        font-weight: 900;
+      }
+
+      .nav-links {
+        display: flex;
+        align-items: center;
+        gap: 26px;
+        color: var(--muted);
+        font-size: 0.96rem;
+      }
+
+      .nav-links a:hover {
+        color: var(--text);
+      }
+
+      .nav-btn {
+        padding: 10px 18px;
+        border-radius: 999px;
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: #06233f;
+        font-weight: 700;
+        box-shadow: var(--shadow);
+      }
+
+      main {
+        padding-bottom: 70px;
+      }
+
+      .hero {
+        padding: 64px 0 28px;
+      }
+
+      .hero-grid {
+        display: grid;
+        grid-template-columns: 1.2fr 0.8fr;
+        gap: 28px;
+        align-items: center;
+      }
+
+      .eyebrow {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 7px 12px;
+        border: 1px solid rgba(94, 234, 212, 0.3);
+        background: rgba(94, 234, 212, 0.06);
+        border-radius: 999px;
+        color: var(--primary);
+        font-size: 0.8rem;
+        font-weight: 700;
+        letter-spacing: 0.05em;
+      }
+
+      h1 {
+        margin: 20px 0 18px;
+        font-size: clamp(2.5rem, 5vw, 4.4rem);
+        line-height: 1.08;
+        letter-spacing: -0.04em;
+      }
+
+      .hero p {
+        max-width: 620px;
+        color: var(--muted);
+        font-size: 1.05rem;
+      }
+
+      .cta {
+        margin-top: 28px;
+        display: flex;
+        flex-wrap: wrap;
+        gap: 16px;
+      }
+
+      .btn {
+        padding: 13px 22px;
+        border-radius: 12px;
+        font-weight: 700;
+        border: 1px solid transparent;
+        transition: 0.2s ease;
+      }
+
+      .btn-primary {
+        background: linear-gradient(135deg, var(--primary), var(--primary-2));
+        color: #041a32;
+        box-shadow: var(--shadow);
+      }
+
+      .btn-secondary {
+        background: rgba(255, 255, 255, 0.02);
+        border-color: var(--line);
+        color: var(--text);
+      }
+
+      .hero-card {
+        background: linear-gradient(180deg, rgba(18, 41, 75, 0.9), rgba(11, 26, 46, 0.9));
+        border: 1px solid var(--line);
+        border-radius: 24px;
+        padding: 22px;
+        box-shadow: var(--shadow);
+      }
+
+      .mini-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        font-size: 0.8rem;
+        margin-bottom: 18px;
+      }
+
+      .dot-group {
+        display: flex;
+        gap: 8px;
+      }
+
+      .dot {
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+      }
+
+      .dot.red { background: #f87171; }
+      .dot.yellow { background: #fbbf24; }
+      .dot.green { background: #34d399; }
+
+      .chart-panel {
+        background: rgba(9, 17, 30, 0.75);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 16px;
+      }
+
+      .chart-lines {
+        display: flex;
+        align-items: end;
+        gap: 12px;
+        height: 170px;
+        padding-top: 20px;
+      }
+
+      .bar {
+        flex: 1;
+        position: relative;
+        border-radius: 12px 12px 0 0;
+        background: linear-gradient(180deg, rgba(94, 234, 212, 0.9), rgba(96, 165, 250, 0.55));
+        min-height: 30%;
+        box-shadow: inset 0 -10px 18px rgba(255,255,255,0.06);
+      }
+
+      .bar:nth-child(1) { height: 36%; }
+      .bar:nth-child(2) { height: 42%; }
+      .bar:nth-child(3) { height: 56%; }
+      .bar:nth-child(4) { height: 63%; }
+      .bar:nth-child(5) { height: 76%; }
+      .bar:nth-child(6) { height: 90%; }
+      .bar:nth-child(7) { height: 74%; }
+      .bar:nth-child(8) { height: 86%; }
+
+      .kpi-grid,
+      .feature-grid,
+      .report-grid,
+      .process-grid {
+        display: grid;
+        gap: 20px;
+      }
+
+      .kpi-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin-top: 30px;
+      }
+
+      .card {
+        background: var(--panel);
+        border: 1px solid var(--line);
+        border-radius: 20px;
+        box-shadow: var(--shadow);
+      }
+
+      .kpi-card {
+        padding: 22px 20px;
+      }
+
+      .kpi-top {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+        margin-bottom: 18px;
+      }
+
+      .icon-box {
+        width: 42px;
+        height: 42px;
+        border-radius: 12px;
+        display: grid;
+        place-items: center;
+        background: linear-gradient(135deg, rgba(94,234,212,0.15), rgba(96,165,250,0.18));
+        color: var(--primary);
+        font-size: 1.2rem;
+      }
+
+      .kpi-value {
+        font-size: clamp(1.7rem, 3vw, 2.5rem);
+        font-weight: 800;
+        line-height: 1.2;
+      }
+
+      .trend {
+        margin-top: 8px;
+        font-size: 0.84rem;
+        color: var(--success);
+        font-weight: 700;
+      }
+
+      section {
+        padding-top: 56px;
+      }
+
+      .section-head {
+        margin-bottom: 24px;
+      }
+
+      .section-head h2 {
+        margin: 0 0 8px;
+        font-size: clamp(1.9rem, 3vw, 2.7rem);
+        letter-spacing: -0.03em;
+      }
+
+      .section-head p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .feature-grid {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+      }
+
+      .feature-card {
+        padding: 24px 22px;
+      }
+
+      .feature-card h3 {
+        margin: 18px 0 10px;
+        font-size: 1.2rem;
+      }
+
+      .feature-card p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      .report-grid {
+        grid-template-columns: 1.2fr 0.8fr;
+        align-items: stretch;
+      }
+
+      .chart-card {
+        padding: 22px;
+      }
+
+      .line-graph {
+        height: 260px;
+        position: relative;
+        border-radius: 18px;
+        background:
+          linear-gradient(to top, rgba(255,255,255,0.03), rgba(255,255,255,0.01)),
+          rgba(9, 17, 30, 0.72);
+        border: 1px solid var(--line);
+        overflow: hidden;
+      }
+
+      .line-graph svg {
+        width: 100%;
+        height: 100%;
+        display: block;
+      }
+
+      .donut-box {
+        display: grid;
+        place-items: center;
+        min-height: 260px;
+      }
+
+      .donut {
+        width: 180px;
+        height: 180px;
+        border-radius: 50%;
+        background: conic-gradient(
+          var(--primary) 0 38%,
+          var(--primary-2) 38% 67%,
+          var(--accent) 67% 88%,
+          #7dd3fc 88% 100%
+        );
+        position: relative;
+      }
+
+      .donut::before {
+        content: "";
+        position: absolute;
+        inset: 24px;
+        border-radius: 50%;
+        background: rgba(7, 26, 45, 0.95);
+        border: 1px solid var(--line);
+      }
+
+      .donut-center {
+        position: absolute;
+        inset: 0;
+        display: grid;
+        place-items: center;
+        text-align: center;
+        font-weight: 800;
+        font-size: 1.6rem;
+      }
+
+      .legend {
+        margin-top: 18px;
+        display: grid;
+        gap: 10px;
+      }
+
+      .legend-item {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        color: var(--muted);
+      }
+
+      .legend-label {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+
+      .legend-swatch {
+        width: 11px;
+        height: 11px;
+        border-radius: 50%;
+      }
+
+      .process-grid {
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+      }
+
+      .step {
+        padding: 22px 18px;
+      }
+
+      .step-no {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        background: linear-gradient(135deg, rgba(94,234,212,0.16), rgba(96,165,250,0.15));
+        border: 1px solid rgba(94,234,212,0.26);
+        display: grid;
+        place-items: center;
+        color: var(--primary);
+        font-weight: 800;
+        margin-bottom: 16px;
+      }
+
+      .step h3 {
+        margin: 0 0 10px;
+      }
+
+      .step p {
+        margin: 0;
+        color: var(--muted);
+      }
+
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        overflow: hidden;
+        border-radius: 18px;
+      }
+
+      th, td {
+        padding: 14px 16px;
+        text-align: left;
+        border-bottom: 1px solid var(--line);
+      }
+
+      th {
+        background: rgba(94, 234, 212, 0.06);
+        color: var(--text);
+      }
+
+      td {
+        color: var(--muted);
+      }
+
+      .analysis-box {
+        padding: 24px 20px;
+      }
+
+      .analysis-box ul {
+        margin: 0;
+        padding-left: 20px;
+        color: var(--muted);
+      }
+
+      .analysis-box li + li {
+        margin-top: 12px;
+      }
+
+      footer {
+        padding: 30px 0 50px;
+        color: var(--muted);
+        text-align: center;
+      }
+
+      @media (max-width: 900px) {
+        .hero-grid,
+        .report-grid,
+        .feature-grid,
+        .process-grid,
+        .kpi-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .nav-links {
+          display: none;
+        }
+      }
+
+      @media (max-width: 640px) {
+        .hero-grid,
+        .report-grid,
+        .feature-grid,
+        .process-grid,
+        .kpi-grid {
+          grid-template-columns: 1fr;
+        }
+
+        .nav {
+          padding: 10px 0;
+        }
+
+        .hero {
+          padding-top: 40px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="container nav">
+        <div class="brand">
+          <div class="brand-mark">BI</div>
+          <span>智慧商業分析</span>
+        </div>
+        <nav class="nav-links">
+          <a href="#overview">專題概述</a>
+          <a href="#metrics">指標</a>
+          <a href="#insights">分析</a>
+          <a href="#process">流程</a>
+          <a href="#conclusion">結論</a>
+        </nav>
+        <a class="nav-btn" href="#conclusion">查看結論</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="hero" id="overview">
+        <div class="container hero-grid">
+          <div>
+            <div class="eyebrow">企業決策資料分析 × 商業智慧</div>
+            <h1>BI 智慧商業分析專題</h1>
+            <p>
+              本專題以「數據驅動的商業決策」為核心，透過營收、顧客行為、產品表現與營運效率等關鍵指標，
+              探討企業如何利用 BI（Business Intelligence）將大量資料轉化為可執行的管理策略與競爭優勢。
+            </p>
+            <div class="cta">
+              <a class="btn btn-primary" href="#metrics">查看關鍵指標</a>
+              <a class="btn btn-secondary" href="#insights">查看分析結果</a>
+            </div>
+          </div>
+
+          <div class="hero-card">
+            <div class="mini-header">
+              <span>銷售趨勢概覽</span>
+              <div class="dot-group">
+                <span class="dot red"></span>
+                <span class="dot yellow"></span>
+                <span class="dot green"></span>
+              </div>
+            </div>
+            <div class="chart-panel">
+              <div class="chart-lines" aria-label="銷售趨勢圖">
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+                <div class="bar"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="container kpi-grid" id="metrics">
+          <div class="card kpi-card">
+            <div class="kpi-top">
+              <span>總營收</span>
+              <div class="icon-box">💰</div>
+            </div>
+            <div class="kpi-value">$ 4.78M</div>
+            <div class="trend">↑ 18.6% 成長</div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="kpi-top">
+              <span>訂單數</span>
+              <div class="icon-box">🛒</div>
+            </div>
+            <div class="kpi-value">84,320</div>
+            <div class="trend">↑ 12.4% 成長</div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="kpi-top">
+              <span>客單價</span>
+              <div class="icon-box">📦</div>
+            </div>
+            <div class="kpi-value">$ 1,260</div>
+            <div class="trend">↑ 7.1% 成長</div>
+          </div>
+
+          <div class="card kpi-card">
+            <div class="kpi-top">
+              <span>滿意度</span>
+              <div class="icon-box">⭐</div>
+            </div>
+            <div class="kpi-value">92.4%</div>
+            <div class="trend">↑ 5.8% 提升</div>
+          </div>
+        </div>
+      </section>
+
+      <section id="insights">
+        <div class="container">
+          <div class="section-head">
+            <h2>專題主題與分析方向</h2>
+            <p>從商業資料中辨識趨勢、風險與成長機會，是 BI 的核心價值。</p>
+          </div>
+
+          <div class="feature-grid">
+            <div class="card feature-card">
+              <div class="icon-box">📊</div>
+              <h3>績效監控</h3>
+              <p>
+                透過 KPI 儀表板即時掌握營收、轉換率與客戶行為表現，強化管理層的決策效率。
+              </p>
+            </div>
+
+            <div class="card feature-card">
+              <div class="icon-box">🎯</div>
+              <h3>目標導向</h3>
+              <p>
+                將企業目標拆解為可量化指標，例如轉換率、留存率與平均訂單金額，便於持續追蹤。
+              </p>
+            </div>
+
+            <div class="card feature-card">
+              <div class="icon-box">🔍</div>
+              <h3>問題診斷</h3>
+              <p>
+                透過異常值檢測與分群分析，快速找出銷售衰退、流失區域與改進優先序。
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container report-grid">
+          <div class="card chart-card">
+            <div class="section-head">
+              <h2>銷售成長趨勢</h2>
+            </div>
+            <div class="line-graph">
+              <svg viewBox="0 0 600 260" preserveAspectRatio="none" aria-label="線性圖表">
+                <defs>
+                  <linearGradient id="lineFill" x1="0" x2="0" y1="0" y2="1">
+                    <stop offset="0%" stop-color="rgba(94,234,212,0.55)" />
+                    <stop offset="100%" stop-color="rgba(94,234,212,0.04)" />
+                  </linearGradient>
+                </defs>
+                <g opacity="0.16" stroke="#dfeaf8" stroke-width="1">
+                  <line x1="0" y1="40" x2="600" y2="40" />
+                  <line x1="0" y1="100" x2="600" y2="100" />
+                  <line x1="0" y1="160" x2="600" y2="160" />
+                  <line x1="0" y1="220" x2="600" y2="220" />
+                </g>
+                <path d="M0 210 C90 196, 120 160, 155 175 S235 120, 285 130 S360 80, 415 96 S500 58, 600 35 L600 260 L0 260 Z" fill="url(#lineFill)"></path>
+                <path d="M0 210 C90 196, 120 160, 155 175 S235 120, 285 130 S360 80, 415 96 S500 58, 600 35" fill="none" stroke="#5eead4" stroke-width="4" stroke-linecap="round"></path>
+                <g fill="#60a5fa">
+                  <circle cx="155" cy="175" r="4"/>
+                  <circle cx="285" cy="130" r="4"/>
+                  <circle cx="415" cy="96" r="4"/>
+                  <circle cx="600" cy="35" r="5"/>
+                </g>
+              </svg>
+            </div>
+          </div>
+
+          <div class="card chart-card">
+            <div class="section-head">
+              <h2>產品結構</h2>
+            </div>
+            <div class="donut-box">
+              <div class="donut">
+                <div class="donut-center">38%</div>
+              </div>
+            </div>
+            <div class="legend">
+              <div class="legend-item">
+                <div class="legend-label"><span class="legend-swatch" style="background: var(--primary);"></span>核心產品</div>
+                <strong>38%</strong>
+              </div>
+              <div class="legend-item">
+                <div class="legend-label"><span class="legend-swatch" style="background: var(--primary-2);"></span>衍生產品</div>
+                <strong>29%</strong>
+              </div>
+              <div class="legend-item">
+                <div class="legend-label"><span class="legend-swatch" style="background: var(--accent);"></span>新進產品</div>
+                <strong>21%</strong>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="process">
+        <div class="container">
+          <div class="section-head">
+            <h2>BI 分析流程</h2>
+            <p>從資料蒐集到決策落地，形成完整的商業智慧管理循環。</p>
+          </div>
+
+          <div class="process-grid">
+            <div class="card step">
+              <div class="step-no">01</div>
+              <h3>資料蒐集</h3>
+              <p>整合銷售、客服、庫存與市場數據，建立完整資料池。</p>
+            </div>
+
+            <div class="card step">
+              <div class="step-no">02</div>
+              <h3>資料清洗</h3>
+              <p>剔除重複資料、異常值與缺失值，提升分析可信度。</p>
+            </div>
+
+            <div class="card step">
+              <div class="step-no">03</div>
+              <h3>資料分析</h3>
+              <p>運用統計及視覺化技術，分析趨勢、關聯與發展潛力。</p>
+            </div>
+
+            <div class="card step">
+              <div class="step-no">04</div>
+              <h3>決策支援</h3>
+              <p>將結果轉化為策略建議，協助管理者做出快速而正確的決策。</p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section>
+        <div class="container">
+          <div class="section-head">
+            <h2>資料表與分析成果</h2>
+            <p>BI 的價值在於將看似零散的數據，整理成可用於決策的資訊。</p>
+          </div>
+
+          <div class="report-grid">
+            <div class="card analysis-box">
+              <table>
+                <thead>
+                  <tr>
+                    <th>營運面向</th>
+                    <th>關鍵指標</th>
+                    <th>當期表現</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>銷售</td>
+                    <td>營收成長率</td>
+                    <td>18.6%</td>
+                  </tr>
+                  <tr>
+                    <td>行銷</td>
+                    <td>轉換率</td>
+                    <td>5.2%</td>
+                  </tr>
+                  <tr>
+                    <td>顧客</td>
+                    <td>滿意度</td>
+                    <td>92.4%</td>
+                  </tr>
+                  <tr>
+                    <td>庫存</td>
+                    <td>週轉率</td>
+                    <td>7.8 次</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="card analysis-box">
+              <h3>主要發現</h3>
+              <ul>
+                <li>核心產品的銷售貢獻占比最高，適合加強品牌曝光與行銷投資。</li>
+                <li>新客導流成效穩定，但回購率仍有提升空間，可設計會員回流策略。</li>
+                <li>高滿意度反映出良好的顧客體驗，應持續優化售後服務與使用者體驗。</li>
+                <li>庫存週轉率穩定，表示供應鏈管理具備良好效率與應變能力。</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <section id="conclusion">
+        <div class="container">
+          <div class="card analysis-box" style="padding: 28px 26px;">
+            <div class="section-head" style="margin-bottom: 18px;">
+              <h2>結論</h2>
+            </div>
+            <p style="margin: 0; color: var(--muted); font-size: 1.05rem;">
+              經由 BI 的資料視覺化與即時監控，可幫助企業更有效地掌握營運狀況、預測未來趨勢，
+              並快速調整營銷與產品策略。對於現代企業而言，BI 不只是分析工具，更是強化競爭優勢與提升決策品質的重要基礎。
+            </p>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <footer>
+      <div class="container">© <span id="year"></span> BI 智慧商業分析專題</div>
+    </footer>
+
+    <script>
+      document.getElementById('year').textContent = new Date().getFullYear();
+    </script>
+  </body>
+</html>
